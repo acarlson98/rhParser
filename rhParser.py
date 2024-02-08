@@ -33,33 +33,3 @@ with open('output.txt', 'a') as f:
             print("Sold: " + row["Description"])
             print("New Value: " + str(accountValue))
             print()
-
-#print(df['Process Date'].iloc[0])
-
-# Activity Date
-# Process Date
-# Settle Date
-# Instrument
-# Description
-# Trans Code
-    # STC - Sell to close
-    # BTO - Buy to open
-# Quantity
-# Price
-# Amount
-
-# Goal is to parse this data and put it into our trade chart
-# Need:
-    # Date
-    # Option Title
-    # Time Opened
-    # Time in market
-    # Win/Loss
-    # Start price
-    # End price
-    # % Change
-    # $ Change
-    # Account Value
-# Eventually:
-    # Day result $
-    # Day result %
