@@ -2,6 +2,18 @@
 
 Goal of the project is to parse Robinhood CSV Export files and put it into our personal trade chart format.
 
+## Requirements
+
+This is a python script. [Python can be downloaded here.](https://www.python.org/downloads/)
+
+This script requires pandas to run, which can be installed using pip (pip should be installed along with Python).
+
+`pip install pandas`
+
+The newer versions of pandas also require pyarrow, so install that too.
+
+`pip install pyarrow`
+
 ## Robinhood CSV Export contains the following columns:
 
 * Activity Date
