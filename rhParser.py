@@ -16,33 +16,41 @@ from decimal import Decimal
 
 accountValue = 0
 
-days = dict()
+dailyGains = dict()
+dailyAccountValue = dict()
 
 # This is a very slow iterator but shouldn't matter for now
 for index, row in df.iterrows():
     if row["Trans Code"] == "BTO":
         openingAmount = row["Amount"].replace("$","").replace(",","").replace("(","").replace(")","")
         accountValue -= Decimal(openingAmount)
-        if row["Settle Date"] in days:
-            days[row["Settle Date"]] -= Decimal(openingAmount)
+        if row["Activity Date"] in dailyGains:
+            dailyGains[row["Activity Date"]] -= Decimal(openingAmount)
         else:
-            days[row["Settle Date"]] = -Decimal(openingAmount)
+            dailyGains[row["Activity Date"]] = -Decimal(openingAmount)
 
     if row["Trans Code"] == "STC":
         closingAmount = row["Amount"].replace("$","").replace(",","").replace("(","").replace(")","")
         accountValue += Decimal(closingAmount)
-        if row["Settle Date"] in days:
-            days[row["Settle Date"]] += Decimal(closingAmount)
+        dailyAccountValue[row["Activity Date"]] = accountValue
+        if row["Activity Date"] in dailyGains:
+            dailyGains[row["Activity Date"]] += Decimal(closingAmount)
         else:
-            days[row["Settle Date"]] = Decimal(closingAmount)
+            dailyGains[row["Activity Date"]] = Decimal(closingAmount)
 
 print("Result: $" + str(accountValue) + "\n")
 #f.write("Result: $" + str(accountValue) + "\n")
 
-outputFrame = pd.DataFrame(days, index=[0])
+outputFrame = pd.DataFrame(dailyGains, index=[0])
+outputFrameTransposed = outputFrame.T
 
-#for key in days:
-#    outputFrame.concat(key, days[key])
+print("Outputting results to dailyGains.csv...")
+outputFrameTransposed.to_csv("dailyGains.csv")
 
-print("Outputting results to output.csv...")
-outputFrame.to_csv("output.csv")
+# dailyAccountValue isn't working yet, probably because the keys are in backwards?
+
+#outputFrame = pd.DataFrame(dailyAccountValue, index=[0])
+#outputFrameTransposed = outputFrame.T
+
+#print("Outputting results to dailyAccountValue.csv...")
+#outputFrameTransposed.to_csv("dailyAccountValue.csv")
